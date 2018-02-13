@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Speedtest</title>
+</head>
+<body>
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <script type="text/javascript" language="Javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.js"></script>    
+    <script type="text/javascript" language="Javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+    <script src="moment/moment.js"></script>
+    <h1>SpeedTest JS</h1>
+    <div class="chart-container" style="position: relative; height:5vh; width:50vw">
+    <canvas id="myChart" width="400px" height="200px"></canvas>
+    <script>
+      $.getJSON( "speedtest.json", function( json ) {
+	var download_arr = [];
+	var upload_arr = [];
+	var timestamp_arr = [];
+	var ping_arr = [];
+	//for (var i = 0; i < json.speedtest.length; i++) {
+	for (var i = 0; i < 25; i++) {
+	  var jsonparse = json.speedtest[i];
+	  download_arr.push((jsonparse.download/1000000).toFixed(2));
+	  upload_arr.push((jsonparse.upload/1000000).toFixed(2));
+	  timestamp_arr.push(moment(jsonparse.timestamp).format("DDMMMY H:mm"));
+	  ping_arr.push(jsonparse.ping);
+        }
+        //console.log(download_arr);
+        //console.log(upload_arr);
+        //console.log(timestamp_arr);   
+
+        var ctx = document.getElementById("myChart").getContext('2d');    
+        var myChart = new Chart(ctx, {
+	  type: 'line',
+	  data: {
+	    //labels: ["ore", "Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+	    labels: timestamp_arr.reverse(),
+	    datasets: [
+		{
+		label: 'Download (Mbit/s)',
+		//data: [12, 19, 3, 5, 2, 3, 38],
+		data: download_arr.reverse(),
+		backgroundColor: ['rgba(0, 204, 0, 0.2)',],
+		borderColor: ['rgba(0,204,0,1)',],
+		borderWidth: 1
+		},
+		
+		{
+		label: 'Upload (Mbit/s)',
+		data: upload_arr.reverse(),
+		backgroundColor: ['rgba(255, 0, 0, 0.2)',],
+		borderColor: ['rgba(255,0,0,1)',],
+		borderWidth: 1
+		},
+
+		{
+		label: 'Ping (ms)',
+		data: ping_arr.reverse(),
+		backgroundColor: ['rgba(0, 102, 255, 0.2)',],
+		borderColor: ['rgba(0,102,255,1)',],
+		borderWidth: 1
+		}
+	    ]
+	  },
+	  options: {
+	    scales: {
+	      yAxes: [{
+	        ticks: {
+	          beginAtZero:true
+		}
+              }]
+	    }
+	  }
+        });
+      }); //chiusura funzione getJSON    
+    </script>
+    </div>
+   </script>
+</body>
+</html>
