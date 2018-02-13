@@ -23,7 +23,7 @@ schedule in your crontab the script bash that run speedtest-cli and write new da
 
 ```$ crontab -e```
 
-and copy this line in your crontab
+and copy this line in your crontab (speedtest run every 60 minutes)
 
-```*/30 * * * *	/bin/bash -l -c 'sh /var/www/html/speedtestjson.sh 2>&1'```
+```*/60 * * * *	/bin/bash -l -c 'sh /var/www/html/speedtestjson.sh 2>&1'```
  
