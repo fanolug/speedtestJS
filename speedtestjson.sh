@@ -1,2 +1,5 @@
 #!/bin/bash
-sed -i "2i$(speedtest-cli --json)," /var/www/html/speedtestJS/speedtest.json
+SPEEDTEST=$(speedtest-cli --json) 
+if [ -n "$SPEEDTEST" ]; then
+  sed -i "2i$SPEEDTEST," /var/www/html/speedtestjs/speedtest.json
+fi
